@@ -1,0 +1,70 @@
+Criação por linha de comando
+
+$ kubectl create configmap my-config --from-literal=key1=value1 --from-literal=key2=value2
+configmap "my-config" created 
+
+
+Get the ConfigMap Details for my-config
+
+$ kubectl get configmaps my-config -o yaml
+apiVersion: v1
+data:
+  key1: value1
+  key2: value2
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2017-05-31T07:21:55Z
+  name: my-config
+  namespace: default
+  resourceVersion: "241345"
+  selfLink: /api/v1/namespaces/default/configmaps/my-config
+  uid: d35f0a3d-45d1-11e7-9e62-080027a46057
+
+With the -o yaml option, we are requesting the kubectl command to spit the output in the YAML format. As we can see, the object has the ConfigMap kind, and it has the key-value pairs inside the data field. The name of ConfigMap and other details are part of the metadata field.
+
+
+Criação por arquivo:
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: customer1
+data:
+  TEXT1: Customer1_Company
+  TEXT2: Welcomes You
+  COMPANY: Customer1 Company Technology Pct. Ltd.
+
+in which we mentioned the kind, metadata, and data fields, which are targeted to connect with the v1 endpoint of the API server.
+
+If we name the file with the configuration above as customer1-configmap.yaml, we can then create the ConfigMap with the following command:
+
+$ kubectl create -f customer1-configmap.yaml
+configmap "customer1" created
+
+
+
+Criar um pod referenciando estas variáveis:
+
+....
+ containers:
+      - name: rsvp-app
+        image: teamcloudyuga/rsvpapp
+        env:
+        - name: MONGODB_HOST
+          value: mongodb
+        - name: TEXT1
+          valueFrom:
+            configMapKeyRef:
+              name: customer1
+              key: TEXT1
+        - name: TEXT2
+          valueFrom:
+            configMapKeyRef:
+              name: customer1
+              key: TEXT2
+        - name: COMPANY
+          valueFrom:
+            configMapKeyRef:
+              name: customer1
+              key: COMPANY
+....

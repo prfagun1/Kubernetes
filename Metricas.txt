@@ -1,0 +1,27 @@
+Os comandos de monitoria de memória e CPU somente estão disponíveis após a instalação do metrics-server.
+
+Link para instalação da versão atualizada: https://github.com/kubernetes-sigs/metrics-server
+
+A versão atual agora é a 0.3.6, segue o comando para instalação:
+
+Baixar o arquivo de configuração:
+wget https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+
+Adicionar o parâmetro abaixo na linha de argumentos:
+- --kubelet-insecure-tls
+
+Aplicar o arquivo baixado:
+Kubectl apply -f arquivo
+
+Verificar status do container:
+kubectl get pods -n kube-system | grep metrics
+
+Verificar os logs:
+kubectl -n kube-system logs $(kubectl -n kube-system get pod --selector=k8s-app=metrics-server -o jsonpath="{.items[0].metadata.name}")
+
+
+
+O processo demora um pouco para começar a coletar as métricas, segue abaixo os comandos para teste:
+
+kubectl top nodes
+kubectl top pod nomePod

@@ -1,0 +1,29 @@
+Listar todos os pods com os servidores: kubectl get pods -o wide -A
+Ressetar configurações de um nó: kubeadm reset --force
+
+Listar todos os recursos: kubectl api-resources
+
+Listar todos os ercursos de um namespace versão detalhada: kubectl api-resources --verbs=list --namespaced -o name   | xargs -n 1 kubectl get --show-kind --ignore-not-found -n "longhorn-system"
+Listar últimos evendos do kubernets: kubectl get events
+Acessar logs de um pod com filtro v1: kubectl -n kube-system logs $(kubectl -n kube-system get pod --selector=k8s-app=metrics-server -o jsonpath="{.items[0].metadata.name}")
+Acessar logs de um pod com filtro v2: kubectl -n agfapaineisp2 logs $(kubectl -n agfapaineisp2 get pod -l app=paineis-ui -o jsonpath="{.items[0].metadata.name}")
+Listar informações de um servidor: kubectl describe node servidor
+Informações sobre autoscale de um pod:  kubectl describe hpa
+Acessar a linha de comando de um container: kubectl  exec --stdin --tty  painel-web-projection-55dc4ff4d6-66vkr /bin/ash
+Listar pods com watch: kubectl -n agfapaineisp2 get pods -o wide -w
+Listar todas as imagens usadas: kubectl get pods --all-namespaces -o jsonpath="{..image}" |tr -s '[[:space:]]' '\n' |sort |uniq -c
+
+
+
+Listar informações da API: kubectl describe pod kube-apiserver -n kube-system
+Exportar um secret para outro namespace: kubectl get secret localdockerreg --namespace=default --export -o yaml | kubectl apply --namespace=dev -f -
+
+Listar tudo de um name system: kubectl get all
+
+Contextos
+
+Listar namespaces: kubectl get namespaces
+Listar todos os recursos de um namespace: kubectl get all --namespace "longhorn-system"
+Listar informações do kubectl: kubectl config view
+Setar um contexto padrão:
+kubectl set-context nomecontexto --namespace
